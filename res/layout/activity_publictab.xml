@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+	<TextView 
+	    android:id="@+id/public_chat_list"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:scrollbars="vertical"
+	/>
+	<EditText
+	    android:id="@+id/public_chat_edit"
+	    android:inputType="text"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_toLeftOf="@+id/public_chat_send"
+	/>
+	<Button
+	    android:id="@+id/public_chat_send"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentRight="true"
+	    android:text="@string/send"
+	/>
+</RelativeLayout>

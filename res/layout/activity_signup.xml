@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+	<TextView 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:text="@string/fill_details"
+	    android:id="@+id/details"
+	/>
+	<EditText
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:hint="@string/fname"
+	    android:id="@+id/fname"
+	/>
+	<!-- <EditText
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:hint="@string/lname"
+	    android:id="@+id/lname"
+	/> 
+	<EditText
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:hint="@string/phone"
+	    android:id="@+id/phone"
+	/>-->
+	<EditText
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:hint="@string/pass"
+	    android:id="@+id/pass"
+	    android:inputType="textPassword"
+	/>
+	<EditText
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:hint="@string/confirm_pass"
+	    android:id="@+id/confirm_pass"
+	    android:inputType="textPassword"
+	/>
+	<!-- <EditText
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:hint="@string/address"
+	    android:id="@+id/address"
+	/> -->
+	<Button
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:text="@string/create"
+	    android:id="@+id/create"
+	/>
+</LinearLayout>

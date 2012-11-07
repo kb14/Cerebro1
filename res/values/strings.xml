@@ -1,0 +1,35 @@
+<resources>
+
+    <string name="app_name">Cerebro</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+	<string name="Welcome_Text">Welcome to Cerebro</string>
+    <string name="new_user">New User? Sign Up!</string>
+    <string name="existing_user">Have an account? Login!</string>
+    <string name="fill_details">Fill your details</string>
+    <string name="fname">User Name</string>
+    <string name="lname">Last Name</string>
+    <string name="phone">Phone No.</string>
+    <string name="pass">Password</string>
+    <string name="confirm_pass">Confirm Password</string>
+    <string name="address">Address</string>
+    <string name="create">Create My Account</string>
+    <string name="enter_id">Enter Username</string>
+    <string name="enter_pass">Enter Password</string>
+    <string name="go">Launch!</string>
+    <string name="login_title">Login</string>
+    <string name="signup_title">Sign Up</string>
+    <string name="tabbed_title">Welcome</string>
+    <string name="send">Send</string>
+    <string name="server_registering">Trying (attempt %1$d/%2$d) to register device on Demo Server.</string>
+    <string name="server_registered">From Demo Server: successfully added device!</string>
+    <string name="server_unregistered">From Demo Server: successfully removed device!</string>
+    <string name="server_register_error">Could not register device on Demo Server after %1$d attempts.</string>
+    <string name="server_unregister_error">Could not unregister device on Demo Server (%1$s).</string>
+    <string name="gcm_registered">From GCM: device successfully registered!</string>
+    <string name="gcm_unregistered">From GCM: device successfully unregistered!</string>
+    <string name="gcm_message">From GCM: you got message!</string>
+    <string name="gcm_error">From GCM: error (%1$s).</string>
+    <string name="gcm_recoverable_error">From GCM: recoverable error (%1$s).</string>
+    <string name="gcm_deleted">From GCM: server deleted %1$d pending messages!</string>
+</resources>
