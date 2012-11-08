@@ -16,38 +16,48 @@ public class MainActivity extends Activity implements OnClickListener {
     ConnectionDetector cd;
     // alert dialog manager
     AlertDialogManager alert = new AlertDialogManager();
+    
+    UserFunctions userFunctions = new UserFunctions();
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        if(userFunctions.isUserLoggedIn(getApplicationContext())){
+			Intent dashboard = new Intent(getApplicationContext(), Tabbed.class);
+			dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        	startActivity(dashboard);
+        	// Closing dashboard screen
+        	finish();
+		}
+        else{
         
-        
-        cd = new ConnectionDetector(getApplicationContext());
-        // Check if Internet present
-        if (!cd.isConnectingToInternet()) {
-            // Internet Connection is not present
-            alert.showAlertDialog(MainActivity.this,
-                    "Internet Connection Error",
-                    "Please connect to working Internet connection", false);
-            // stop executing code by return
-            return;
+	        cd = new ConnectionDetector(getApplicationContext());
+	        // Check if Internet present
+	        if (!cd.isConnectingToInternet()) {
+	            // Internet Connection is not present
+	            alert.showAlertDialog(MainActivity.this,
+	                    "Internet Connection Error",
+	                    "Please connect to working Internet connection", false);
+	            // stop executing code by return
+	            return;
+	        }
+	        // Check if GCM configuration is set
+	        if (SERVER_URL == null || SENDER_ID == null || SERVER_URL.length() == 0
+	                || SENDER_ID.length() == 0) {
+	            // GCM sernder id / server url is missing
+	            alert.showAlertDialog(MainActivity.this, "Configuration Error!",
+	                    "Please set your Server URL and GCM Sender ID", false);
+	            // stop executing code by return
+	             return;
+	        }
+	        
+	        newu=(Button) findViewById(R.id.newu);
+	        existingu=(Button) findViewById(R.id.existingu);
+	        newu.setOnClickListener(this);
+	        existingu.setOnClickListener(this);
         }
-        // Check if GCM configuration is set
-        if (SERVER_URL == null || SENDER_ID == null || SERVER_URL.length() == 0
-                || SENDER_ID.length() == 0) {
-            // GCM sernder id / server url is missing
-            alert.showAlertDialog(MainActivity.this, "Configuration Error!",
-                    "Please set your Server URL and GCM Sender ID", false);
-            // stop executing code by return
-             return;
-        }
-        
-        newu=(Button) findViewById(R.id.newu);
-        existingu=(Button) findViewById(R.id.existingu);
-        newu.setOnClickListener(this);
-        existingu.setOnClickListener(this);
     }
     
     @Override

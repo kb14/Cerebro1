@@ -4,13 +4,11 @@ import static com.codename51.cerebro.CommonUtilities.SENDER_ID;
 import static com.codename51.cerebro.CommonUtilities.KEY_SUCCESS;
 
 import java.util.HashMap;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.android.gcm.GCMRegistrar;
 
-import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -33,7 +31,7 @@ public class Tabbed extends TabActivity
     
     // Asyntask
     AsyncTask<Void, Void, Void> mRegisterTask, logoutTask;
-    private ProgressDialog pDialog;
+    //private ProgressDialog pDialog;
     // Alert dialog manager
     AlertDialogManager alert = new AlertDialogManager();
     // Connection detector
