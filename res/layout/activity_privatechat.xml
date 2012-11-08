@@ -4,22 +4,22 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
     <TextView 
-	    android:id="@+id/pvt_chat_list"
+	    android:id="@+id/lblMessage"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:scrollbars="vertical"
 	/>
 	<EditText
-	    android:id="@+id/pvt_chat_edit"
+	    android:id="@+id/chat"
 	    android:inputType="text"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentBottom="true"
 	    android:layout_alignParentLeft="true"
-	    android:layout_toLeftOf="@+id/pvt_chat_send"
+	    android:layout_toLeftOf="@+id/sendMessageButton"
 	/>
 	<Button
-	    android:id="@+id/pvt_chat_send"
+	    android:id="@+id/sendMessageButton"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentBottom="true"

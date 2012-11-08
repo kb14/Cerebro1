@@ -101,13 +101,10 @@ public class UserFunctions {
 	     *
 	     */
 	    
-	    public JSONObject sendChat(String serverId, String name, String email, String regId, String message){
+	    public JSONObject sendChat(String regId, String message){
 	    	
 	    	List<NameValuePair> params = new ArrayList<NameValuePair>();
 	    	
-	    	params.add(new BasicNameValuePair("serverId", serverId));
-	    	params.add(new BasicNameValuePair("name", name));
-	    	params.add(new BasicNameValuePair("email", email));
 	    	params.add(new BasicNameValuePair("regId", regId));
 	    	params.add(new BasicNameValuePair("message", message));
 	    	

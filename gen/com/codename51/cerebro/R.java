@@ -18,6 +18,7 @@ public final class R {
         public static final int success=0x7f020004;
     }
     public static final class id {
+        public static final int chat=0x7f07000a;
         public static final int chat_box=0x7f070001;
         public static final int chat_list=0x7f070000;
         public static final int confirm_pass=0x7f070013;
@@ -28,6 +29,7 @@ public final class R {
         public static final int existingu=0x7f070008;
         public static final int fname=0x7f070011;
         public static final int go=0x7f070005;
+        public static final int lblMessage=0x7f070009;
         public static final int login_error=0x7f070004;
         public static final int menu_logout=0x7f070015;
         public static final int menu_settings=0x7f070017;
@@ -37,10 +39,8 @@ public final class R {
         public static final int public_chat_edit=0x7f07000e;
         public static final int public_chat_list=0x7f07000d;
         public static final int public_chat_send=0x7f07000f;
-        public static final int pvt_chat_edit=0x7f07000a;
-        public static final int pvt_chat_list=0x7f070009;
-        public static final int pvt_chat_send=0x7f07000b;
         public static final int pvt_list=0x7f07000c;
+        public static final int sendMessageButton=0x7f07000b;
         public static final int welcome_text=0x7f070006;
     }
     public static final class layout {

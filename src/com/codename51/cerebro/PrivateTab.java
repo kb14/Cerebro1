@@ -38,6 +38,7 @@ public class PrivateTab extends Activity
     SqliteHandler db ;
     //AsyncTask
     AsyncTask<Void, Void, Void> getUsersTask;
+    ArrayList<HashMap<String, String>> userList;
     
     String cServerid="",cName="",cRegid="";
 	public void onCreate(Bundle savedInstanceState)
@@ -52,7 +53,7 @@ public class PrivateTab extends Activity
         cRegid = user.get("regid");
         
         pvtList=(ListView) findViewById(R.id.pvt_list);
-        final ArrayList<String[]> userList=new ArrayList<String[]>();
+        userList = new ArrayList<HashMap<String, String>>();
         final ArrayList<CharSequence> only_names=new ArrayList<CharSequence>();
         
         getUsersTask = new AsyncTask<Void, Void, Void>(){
@@ -78,9 +79,16 @@ public class PrivateTab extends Activity
 								 String name = c.getString(TAG_NAME);
 								 String lat = c.getString(TAG_LAT);
 								 String lon = c.getString(TAG_LONG);
+								// creating new HashMap
+								HashMap<String, String> map = new HashMap<String, String>();
+								map.put("serverid", id);
+								map.put("regId", regId);
+								map.put("name", name);
+								map.put("lat", lat);
+								map.put("lon", lon);
 								 if(!cServerid.equals(id)){
 									 only_names.add(name);
-									 userList.add(new String[]{id, regId, name, lat, lon});
+									 userList.add(map);
 								 }
 							 }
 						}
@@ -103,7 +111,9 @@ public class PrivateTab extends Activity
 						    public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 						    {
 						    	Intent i=new Intent(getApplicationContext(), PrivateChat.class);
-						    	i.putExtra("userSpecs", userList.get(position));
+						    	i.putExtra("serverid", userList.get(position).get("serverid"));
+						    	i.putExtra("regId", userList.get(position).get("regId"));
+						    	i.putExtra("name", userList.get(position).get("name"));
 						    	startActivity(i);
 						    }
 						  });   
