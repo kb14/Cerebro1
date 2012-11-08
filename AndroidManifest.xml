@@ -7,6 +7,32 @@
         android:minSdkVersion="10"
         android:targetSdkVersion="15" />
 
+     <!-- GCM connects to Internet Services. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+ 
+    <!-- GCM requires a Google account. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+ 
+    <!-- Keeps the processor from sleeping when a message is received. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+ 
+    <!-- Creates a custom permission so only this app can receive its messages. -->
+    <permission
+        android:name="com.codename51.cerebro.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+ 
+    <uses-permission android:name="com.codename51.cerebro.permission.C2D_MESSAGE" />
+ 
+    <!-- This app has permission to register and receive data message. -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+ 
+    <!-- Network State Permissions to detect Internet status -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+ 
+    <!-- Permission to vibrate -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -20,6 +46,47 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity 
+		    android:name=".Login"
+			android:label="@string/login_title" >
+		</activity>
+		<activity 
+		    android:name=".SignUp"
+			android:label="@string/signup_title" >
+		</activity>
+		<activity 
+		    android:name=".Tabbed"
+			android:label="@string/tabbed_title"
+            android:configChanges="keyboardHidden|orientation"
+            >
+            <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+ 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter> -->
+        </activity>
+ 
+        <activity android:name=".PrivateTab" />
+ 
+        <activity android:name=".PublicTab" />
+ 
+        <activity android:name=".LocationTab" />
+        <activity android:name=".PrivateChat" />
+        <receiver
+            android:name="com.google.android.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+ 
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <!-- Receives the registration id. -->
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+ 
+                <category android:name="com.codename51.cerebro" />
+            </intent-filter>
+        </receiver>
+ 
+        <service android:name=".GCMIntentService" />
     </application>
 
 </manifest>

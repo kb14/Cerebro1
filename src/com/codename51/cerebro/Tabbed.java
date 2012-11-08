@@ -3,16 +3,23 @@ package com.codename51.cerebro;
 import static com.codename51.cerebro.CommonUtilities.SENDER_ID;
 import static com.codename51.cerebro.CommonUtilities.KEY_SUCCESS;
 
+import java.util.HashMap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.android.gcm.GCMRegistrar;
 
+import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
  
@@ -25,7 +32,8 @@ public class Tabbed extends TabActivity
     private static final String Location_SPEC = "Track Location";
     
     // Asyntask
-    AsyncTask<Void, Void, Void> mRegisterTask;
+    AsyncTask<Void, Void, Void> mRegisterTask, logoutTask;
+    private ProgressDialog pDialog;
     // Alert dialog manager
     AlertDialogManager alert = new AlertDialogManager();
     // Connection detector
@@ -160,6 +168,78 @@ public class Tabbed extends TabActivity
         tabHost.addTab(locationSpec); // Adding Profile tab
     }
     
+    
+    /* Initiating Menu XML file (menu.xml) */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.layout.bottommenu, menu);
+        return true;
+    }
+    
+    /**
+     * Event Handling for Individual menu item selected
+     * Identify single menu item by it's id
+     * */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        
+        switch (item.getItemId())
+        {
+        case R.id.menu_logout:
+        	// Single menu item is selected do something
+        	// Ex: launching new activity/screen or show alert message
+        	
+            
+            logoutTask = new AsyncTask<Void, Void, Void>(){
+            	/*@Override
+				protected void onPreExecute() {
+					super.onPreExecute();
+					pDialog = new ProgressDialog(Tabbed.this);
+					pDialog.setMessage("Logging Out. Please wait...");
+					pDialog.setIndeterminate(false);
+					pDialog.setCancelable(false);
+					pDialog.show();
+				}*/
+            	@Override
+                protected Void doInBackground(Void... params) {
+            		SqliteHandler lo = new SqliteHandler(getApplicationContext());
+                    UserFunctions uf = new UserFunctions();
+                    HashMap<String,String> user = lo.getUserDetails();
+                    String serverid = user.get("serverid");
+                    Log.d("SERVERID", serverid);
+            		JSONObject js = uf.logoutUserFromServer(serverid);
+            		try {
+						Log.d("SUCCESS", js.getString("success"));
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+            		uf.logoutUser(getApplicationContext());
+            		return null;
+            	}
+            	protected void onPostExecute(Void result) {
+					// dismiss the dialog after getting all restaurants
+					//pDialog.dismiss();
+					logoutTask = null;
+					
+            	}
+            };
+            logoutTask.execute(null, null, null);
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            this.finish();
+            return true;
+        
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
+    
     @Override
     protected void onDestroy() {
     	if (mRegisterTask != null) {
@@ -167,4 +247,7 @@ public class Tabbed extends TabActivity
         }
     	super.onDestroy();
     }
+    
+    
+    
 }

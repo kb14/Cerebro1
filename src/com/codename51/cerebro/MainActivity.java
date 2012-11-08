@@ -22,6 +22,8 @@ public class MainActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
+        
+        
         cd = new ConnectionDetector(getApplicationContext());
         // Check if Internet present
         if (!cd.isConnectingToInternet()) {

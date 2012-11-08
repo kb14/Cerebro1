@@ -3,6 +3,7 @@ package com.codename51.cerebro;
 import java.util.ArrayList;
 import java.util.List;
 import static com.codename51.cerebro.CommonUtilities.LOGIN_URL;
+import static com.codename51.cerebro.CommonUtilities.LOGOUT_URL;
 import static com.codename51.cerebro.CommonUtilities.CHAT_URL;
 import static com.codename51.cerebro.CommonUtilities.GETUSERS_URL;
 
@@ -42,6 +43,24 @@ public class UserFunctions {
 			}
 			return json;
 			
+	    }
+	    
+	    /**
+	     * Logout user from the device.
+	     *
+	     */
+	    
+	    public JSONObject logoutUserFromServer(String serverid){
+	    	
+	    	List<NameValuePair> params = new ArrayList<NameValuePair>();
+	    	params.add(new BasicNameValuePair("serverid", serverid));
+	    	
+	    	JSONObject json = jsonParser.getJSONFromUrl(LOGOUT_URL, params);
+	    	if(jsonParser.an == 1){
+				bn = 1;
+			}
+			return json;
+	    	
 	    }
 	    
 	    /**
