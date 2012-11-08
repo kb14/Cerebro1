@@ -30,7 +30,7 @@ public class Tabbed extends TabActivity
     private static final String Location_SPEC = "Track Location";
     
     // Asyntask
-    AsyncTask<Void, Void, Void> mRegisterTask, logoutTask;
+    AsyncTask<Void, Void, Void> mRegisterTask, logoutTask, updateTask;
     //private ProgressDialog pDialog;
     // Alert dialog manager
     AlertDialogManager alert = new AlertDialogManager();
@@ -80,7 +80,33 @@ public class Tabbed extends TabActivity
                 GCMRegistrar.register(this, SENDER_ID);
             }
             else{
-            	
+            	//Update Registration Id for the User logged in.
+            	updateTask = new AsyncTask<Void, Void, Void>(){
+            		@Override
+                    protected Void doInBackground(Void... params) {
+		            	UserFunctions uf = new UserFunctions();
+		    	        SqliteHandler ur = new SqliteHandler(getApplicationContext());
+		    	        HashMap<String,String> user = ur.getUserDetails();
+		    	        String serverid = user.get("serverid");
+		    	        JSONObject json1 = uf.updateRegid(serverid, regId);
+		    	        try {
+		    				Log.d("SUCCESS_GCMINTENTSERVICE", json1.getString("success"));
+		    			} catch (JSONException e) {
+		    				// TODO Auto-generated catch block
+		    				e.printStackTrace();
+		    			}
+		    	        return null;
+            		}
+            		@Override
+	    	        protected void onPostExecute(Void result) {
+						// dismiss the dialog after getting all restaurants
+						//pDialog.dismiss();
+						updateTask = null;
+						
+	            	}
+            	};
+            	updateTask.execute(null, null, null);
+    	        
             }
         }
         else{
@@ -192,15 +218,7 @@ public class Tabbed extends TabActivity
         	
             
             logoutTask = new AsyncTask<Void, Void, Void>(){
-            	/*@Override
-				protected void onPreExecute() {
-					super.onPreExecute();
-					pDialog = new ProgressDialog(Tabbed.this);
-					pDialog.setMessage("Logging Out. Please wait...");
-					pDialog.setIndeterminate(false);
-					pDialog.setCancelable(false);
-					pDialog.show();
-				}*/
+            	
             	@Override
                 protected Void doInBackground(Void... params) {
             		SqliteHandler lo = new SqliteHandler(getApplicationContext());

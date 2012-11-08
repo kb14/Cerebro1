@@ -6,6 +6,7 @@ import static com.codename51.cerebro.CommonUtilities.LOGIN_URL;
 import static com.codename51.cerebro.CommonUtilities.LOGOUT_URL;
 import static com.codename51.cerebro.CommonUtilities.CHAT_URL;
 import static com.codename51.cerebro.CommonUtilities.GETUSERS_URL;
+import static com.codename51.cerebro.CommonUtilities.UPDATEREGID_URL;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -46,7 +47,7 @@ public class UserFunctions {
 	    }
 	    
 	    /**
-	     * Logout user from the device.
+	     * Logout user from the device and server.
 	     *
 	     */
 	    
@@ -61,6 +62,23 @@ public class UserFunctions {
 			}
 			return json;
 	    	
+	    }
+	    
+	    /**
+	     * Update User Registration ID
+	     */
+	    
+	    public JSONObject updateRegid(String serverid, String regId){
+	    	
+	    	List<NameValuePair> params = new ArrayList<NameValuePair>();
+	    	params.add(new BasicNameValuePair("serverid", serverid));
+	    	params.add(new BasicNameValuePair("regId", regId));
+	    	
+	    	JSONObject json = jsonParser.getJSONFromUrl(UPDATEREGID_URL, params);
+	    	if(jsonParser.an == 1){
+				bn = 1;
+			}
+			return json;
 	    }
 	    
 	    /**

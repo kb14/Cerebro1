@@ -1,5 +1,7 @@
 package com.codename51.cerebro;
 
+import java.util.HashMap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,6 +10,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
  
 import com.google.android.gcm.GCMBaseIntentService;
@@ -19,6 +22,9 @@ import static com.codename51.cerebro.CommonUtilities.displayMessage;
 public class GCMIntentService extends GCMBaseIntentService {
  
     private static final String TAG = "GCMIntentService";
+    
+ // Asyntask
+    AsyncTask<Void, Void, Void> updateTask;
     
     //To receive user details from the server
     JSONObject json;
@@ -60,6 +66,28 @@ public class GCMIntentService extends GCMBaseIntentService {
 			}catch (JSONException e) {
 				e.printStackTrace();
 			}
+        }
+        else{
+        	final String ri = registrationId;
+        	//Update Registration Id for the User logged in.
+        	updateTask = new AsyncTask<Void, Void, Void>(){
+        		@Override
+                protected Void doInBackground(Void... params) {
+		        	UserFunctions userFunctions = new UserFunctions();
+			        SqliteHandler db = new SqliteHandler(getApplicationContext());
+			        HashMap<String,String> user = db.getUserDetails();
+			        String serverid = user.get("serverid");
+			        JSONObject json1 = userFunctions.updateRegid(serverid, ri);
+			        try {
+						Log.d("SUCCESS_GCMINTENTSERVICE", json1.getString("success"));
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			        return null;
+        		}
+        	};
+        	
         }
         
     }

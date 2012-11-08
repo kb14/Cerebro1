@@ -12,6 +12,7 @@ public final class CommonUtilities {
     static final String LOGIN_URL = "http://192.168.43.35/gcm_server_php/login.php";
     static final String GETUSERS_URL = "http://192.168.43.35/gcm_server_php/get_users.php";
     static final String LOGOUT_URL = "http://192.168.43.35/gcm_server_php/logout.php";
+    static final String UPDATEREGID_URL = "http://192.168.43.35/gcm_server_php/update_regid.php";
     
     static final String KEY_SUCCESS = "success";
  
