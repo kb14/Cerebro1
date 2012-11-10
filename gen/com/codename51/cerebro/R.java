@@ -15,7 +15,8 @@ public final class R {
         public static final int ic_action_search=0x7f020001;
         public static final int ic_launcher=0x7f020002;
         public static final int ic_menu_close_clear_cancel=0x7f020003;
-        public static final int success=0x7f020004;
+        public static final int ic_menu_refresh=0x7f020004;
+        public static final int success=0x7f020005;
     }
     public static final class id {
         public static final int chat=0x7f07000a;
@@ -32,10 +33,11 @@ public final class R {
         public static final int lblMessage=0x7f070009;
         public static final int login_error=0x7f070004;
         public static final int menu_logout=0x7f070015;
-        public static final int menu_settings=0x7f070017;
+        public static final int menu_refresh=0x7f070016;
+        public static final int menu_settings=0x7f070018;
         public static final int newu=0x7f070007;
         public static final int pass=0x7f070012;
-        public static final int private_item=0x7f070016;
+        public static final int private_item=0x7f070017;
         public static final int public_chat_edit=0x7f07000e;
         public static final int public_chat_list=0x7f07000d;
         public static final int public_chat_send=0x7f07000f;
@@ -53,7 +55,8 @@ public final class R {
         public static final int activity_signup=0x7f030006;
         public static final int activity_tabbed=0x7f030007;
         public static final int bottommenu=0x7f030008;
-        public static final int private_tab_list_item=0x7f030009;
+        public static final int bottommenu1=0x7f030009;
+        public static final int private_tab_list_item=0x7f03000a;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;

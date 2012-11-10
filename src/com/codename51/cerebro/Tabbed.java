@@ -1,8 +1,6 @@
 package com.codename51.cerebro;
 
 import static com.codename51.cerebro.CommonUtilities.SENDER_ID;
-import static com.codename51.cerebro.CommonUtilities.KEY_SUCCESS;
-
 import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,14 +8,10 @@ import org.json.JSONObject;
 import com.google.android.gcm.GCMRegistrar;
 
 import android.app.TabActivity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
  
@@ -30,7 +24,7 @@ public class Tabbed extends TabActivity
     private static final String Location_SPEC = "Track Location";
     
     // Asyntask
-    AsyncTask<Void, Void, Void> mRegisterTask, logoutTask, updateTask;
+    AsyncTask<Void, Void, Void> mRegisterTask, updateTask;
     //private ProgressDialog pDialog;
     // Alert dialog manager
     AlertDialogManager alert = new AlertDialogManager();
@@ -109,62 +103,6 @@ public class Tabbed extends TabActivity
     	        
             }
         }
-        else{
-        	Intent i = getIntent();
-            name = i.getStringExtra("name");
-            password = i.getStringExtra("password");
-            // Check if regid already presents
-            if (regId.equals("")) {
-            	// Registration is not present, register now with GCM
-                GCMRegistrar.register(this, SENDER_ID);
-            }
-            else{
-            	// Device is already registered on GCM
-                if (GCMRegistrar.isRegisteredOnServer(this)) {
-                    final Context context = this;
-                    mRegisterTask = new AsyncTask<Void, Void, Void>() {
-     
-                        @Override
-                        protected Void doInBackground(Void... params) {
-                            // Register on our server
-                            // On server creates a new user
-                            ServerUtilities.register(context, name, password, regId);
-                            return null;
-                        }
-     
-                        @Override
-                        protected void onPostExecute(Void result) {
-                            mRegisterTask = null;
-                        }
-     
-                    };
-                    mRegisterTask.execute(null, null, null);
-                    UserFunctions userFunctions = new UserFunctions();
-                    SqliteHandler db = new SqliteHandler(getApplicationContext());
-                    
-                    json = userFunctions.loginUser(name, password);
-                    try {
-            			if (json.getString(KEY_SUCCESS) != null) {
-            				String res = json.getString(KEY_SUCCESS);
-            				if(Integer.parseInt(res) == 1){
-            					// user successfully logged in
-            					
-            					JSONObject json_user = json.getJSONObject("user");
-            					// Clear all previous data in database
-            					userFunctions.logoutUser(getApplicationContext());
-            					db.addUser(json_user.getInt("id"), json_user.getString("name"), json_user.getString("regid"));
-            				}
-            				else{
-            					
-            				}
-            			}
-            		}catch (JSONException e) {
-            			e.printStackTrace();
-            		}                	
-                }
-            }
-        }
- 
         // Inbox Tab
         TabSpec privateSpec = tabHost.newTabSpec(Private_SPEC);
         // Tab Icon
@@ -193,76 +131,15 @@ public class Tabbed extends TabActivity
     }
     
     
-    /* Initiating Menu XML file (menu.xml) */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.layout.bottommenu, menu);
-        return true;
-    }
     
-    /**
-     * Event Handling for Individual menu item selected
-     * Identify single menu item by it's id
-     * */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        
-        switch (item.getItemId())
-        {
-        case R.id.menu_logout:
-        	// Single menu item is selected do something
-        	// Ex: launching new activity/screen or show alert message
-        	
-            
-            logoutTask = new AsyncTask<Void, Void, Void>(){
-            	
-            	@Override
-                protected Void doInBackground(Void... params) {
-            		SqliteHandler lo = new SqliteHandler(getApplicationContext());
-                    UserFunctions uf = new UserFunctions();
-                    HashMap<String,String> user = lo.getUserDetails();
-                    String serverid = user.get("serverid");
-                    Log.d("SERVERID", serverid);
-            		JSONObject js = uf.logoutUserFromServer(serverid);
-            		try {
-						Log.d("SUCCESS", js.getString("success"));
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-            		uf.logoutUser(getApplicationContext());
-            		return null;
-            	}
-            	protected void onPostExecute(Void result) {
-					// dismiss the dialog after getting all restaurants
-					//pDialog.dismiss();
-					logoutTask = null;
-					
-            	}
-            };
-            logoutTask.execute(null, null, null);
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            this.finish();
-            return true;
-        
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    }
     
-    @Override
+   /* @Override
     protected void onDestroy() {
     	if (mRegisterTask != null) {
             mRegisterTask.cancel(true);
         }
     	super.onDestroy();
-    }
+    }*/
     
     
     

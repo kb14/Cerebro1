@@ -8,8 +8,5 @@
     	  android:icon="@drawable/ic_menu_close_clear_cancel"
           android:title="Logout" />
 	
-	<item android:id="@+id/menu_refresh"
-    	  android:icon="@drawable/ic_menu_refresh"
-          android:title="Refresh" />
-
+	
 </menu>

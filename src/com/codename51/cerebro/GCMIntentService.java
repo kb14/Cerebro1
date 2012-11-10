@@ -24,7 +24,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     private static final String TAG = "GCMIntentService";
     
  // Asyntask
-    AsyncTask<Void, Void, Void> updateTask;
+    AsyncTask<Void, Void, Void> updateTask, registerTask;
     
     //To receive user details from the server
     JSONObject json;
@@ -42,30 +42,39 @@ public class GCMIntentService extends GCMBaseIntentService {
         displayMessage(context, "Your device registered with GCM");
         //Log.d("NAME", MainActivity.name);
         if(Tabbed.indicator != 1){
-	        ServerUtilities.register(context, Tabbed.name, Tabbed.password, registrationId);
+        	final Context cxt = context;
+        	final String ri = registrationId;
+        	registerTask = new AsyncTask<Void, Void, Void>(){
+        		@Override
+                protected Void doInBackground(Void... params) {
+        			ServerUtilities.register(cxt, Tabbed.name, Tabbed.password, ri);
+        	        
+        	        UserFunctions userFunctions = new UserFunctions();
+        	        SqliteHandler db = new SqliteHandler(cxt);
+        	        json = userFunctions.loginUser(Tabbed.name, Tabbed.password);
+        	        try {
+        				if (json.getString(KEY_SUCCESS) != null) {
+        					String res = json.getString(KEY_SUCCESS);
+        					if(Integer.parseInt(res) == 1){
+        						// user successfully logged in
+        						
+        						JSONObject json_user = json.getJSONObject("user");
+        						// Clear all previous data in database
+        						userFunctions.logoutUser(getApplicationContext());
+        						db.addUser(json_user.getInt("id"), json_user.getString("name"), json_user.getString("regid"));
+        					}
+        					else{
+        						
+        					}
+        				}
+        			}catch (JSONException e) {
+        				e.printStackTrace();
+        			}
+        			return null;
+        		}
+        		
+        	};
 	        
-	        UserFunctions userFunctions = new UserFunctions();
-	        SqliteHandler db = new SqliteHandler(context);
-	        
-	        json = userFunctions.loginUser(Tabbed.name, Tabbed.password);
-	        try {
-				if (json.getString(KEY_SUCCESS) != null) {
-					String res = json.getString(KEY_SUCCESS);
-					if(Integer.parseInt(res) == 1){
-						// user successfully logged in
-						
-						JSONObject json_user = json.getJSONObject("user");
-						// Clear all previous data in database
-						userFunctions.logoutUser(getApplicationContext());
-						db.addUser(json_user.getInt("id"), json_user.getString("name"), json_user.getString("regid"));
-					}
-					else{
-						
-					}
-				}
-			}catch (JSONException e) {
-				e.printStackTrace();
-			}
         }
         else{
         	final String ri = registrationId;
@@ -109,7 +118,10 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context context, Intent intent) {
         Log.i(TAG, "Received message");
         String message = intent.getExtras().getString("price");
- 
+        String sid = intent.getExtras().getString("sid");
+        MessageHandler mh = new MessageHandler(getApplicationContext());
+    	mh.storeMessage(Integer.parseInt(sid), 1, message);
+        
         displayMessage(context, message);
         // notifies user
         generateNotification(context, message);
@@ -159,7 +171,7 @@ public class GCMIntentService extends GCMBaseIntentService {
  
         String title = context.getString(R.string.app_name);
  
-        Intent notificationIntent = new Intent(context, MainActivity.class);
+        Intent notificationIntent = new Intent(context, Tabbed.class);
         // set intent so it does not start a new activity
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);

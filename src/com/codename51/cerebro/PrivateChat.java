@@ -5,6 +5,9 @@ import static com.codename51.cerebro.CommonUtilities.displayMessage;
 import static com.codename51.cerebro.CommonUtilities.EXTRA_MESSAGE;
 import static com.codename51.cerebro.CommonUtilities.DISPLAY_MESSAGE_ACTION;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +27,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PrivateChat extends Activity implements OnClickListener{
 	
@@ -62,6 +64,14 @@ public class PrivateChat extends Activity implements OnClickListener{
 	        name = i.getStringExtra("name");
 	        serverid = i.getStringExtra("serverid");
 	        regId = i.getStringExtra("regId");
+	        
+	        MessageHandler mh = new MessageHandler(getApplicationContext());
+	        ArrayList<String> chatHistory = new ArrayList<String>();
+	        chatHistory = mh.getChatHistory(Integer.parseInt(serverid), name);
+	        for(int j = 0; j<chatHistory.size(); j++){
+	        	lblMessage.append(chatHistory.get(j) + "\n");
+	        }
+	        
 	    }
 	 
 	 public void onClick(View v){
@@ -73,7 +83,10 @@ public class PrivateChat extends Activity implements OnClickListener{
 	                protected Void doInBackground(Void... params) {
 		 				//Sends the chat message to our servers
 		    			//From our servers->GCM server->intended receiver (user we're chatting with)
-		    			JSONObject json1 = userFunctions.sendChat(regId, chatMessage);
+		 				SqliteHandler usr = new SqliteHandler(getApplicationContext());
+		 				HashMap<String,String> user = usr.getUserDetails();
+		 				String sid = user.get("serverid");
+		    			JSONObject json1 = userFunctions.sendChat(regId, chatMessage, sid);
 		    			try {
 	    					if (json1.getString(KEY_SUCCESS) != null) {
 	    						String res = json1.getString(KEY_SUCCESS);
@@ -99,6 +112,8 @@ public class PrivateChat extends Activity implements OnClickListener{
 	    		displayMessage(getApplicationContext(),"ME: "+ chatMessage);
 	    		indicator = 1;
 	    		sendMessageTask.execute(null, null, null);
+	    		MessageHandler mh = new MessageHandler(getApplicationContext());
+	    		mh.storeMessage(Integer.parseInt(serverid) , 0, chatMessage);
 		 		break;
 		 }
 		 
@@ -116,9 +131,7 @@ public class PrivateChat extends Activity implements OnClickListener{
 	            WakeLocker.acquire(getApplicationContext());
 	 
 	            /**
-	             * Take appropriate action on this message
-	             * depending upon your app requirement
-	             * For now i am just displaying it on the screen
+	             * Displaying message on the screen 
 	             * */
 	            
 	            // Showing received message
@@ -139,7 +152,7 @@ public class PrivateChat extends Activity implements OnClickListener{
 	                lblMessage.scrollTo(0, scrollAmount);
 	            else
 	                lblMessage.scrollTo(0,0);
-	            Toast.makeText(getApplicationContext(), "New Message: " + newMessage, Toast.LENGTH_LONG).show();
+	            //Toast.makeText(getApplicationContext(), "New Message: " + newMessage, Toast.LENGTH_LONG).show();
 	 
 	            // Releasing wake lock
 	            WakeLocker.release();

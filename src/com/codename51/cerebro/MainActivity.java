@@ -22,7 +22,7 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        
         
         if(userFunctions.isUserLoggedIn(getApplicationContext())){
 			Intent dashboard = new Intent(getApplicationContext(), Tabbed.class);
@@ -32,7 +32,7 @@ public class MainActivity extends Activity implements OnClickListener {
         	finish();
 		}
         else{
-        
+        	setContentView(R.layout.activity_main);
 	        cd = new ConnectionDetector(getApplicationContext());
 	        // Check if Internet present
 	        if (!cd.isConnectingToInternet()) {
@@ -67,10 +67,12 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.newu:
 			Intent i=new Intent(this, SignUp.class);
 			startActivity(i);
+			finish();
 			break;
 		case R.id.existingu:
 			Intent j=new Intent(this, Login.class);
 			startActivity(j);
+			finish();
 			break;
 		}
 	}
