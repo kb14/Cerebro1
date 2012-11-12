@@ -118,7 +118,7 @@ public class PrivateChat extends Activity implements OnClickListener{
 		 }
 		 
 		}
-	 /**
+	 	/**
 	     * Receiving push messages
 	     * */
 	    private final BroadcastReceiver mHandleMessageReceiver = new BroadcastReceiver() {
@@ -152,8 +152,6 @@ public class PrivateChat extends Activity implements OnClickListener{
 	                lblMessage.scrollTo(0, scrollAmount);
 	            else
 	                lblMessage.scrollTo(0,0);
-	            //Toast.makeText(getApplicationContext(), "New Message: " + newMessage, Toast.LENGTH_LONG).show();
-	 
 	            // Releasing wake lock
 	            WakeLocker.release();
 	        }

@@ -70,7 +70,7 @@ public class PrivateTab extends Activity
 		        //ojson = new JSONObject(user_json);
 		        // LATITUDE LONGITUDE WILL GO AS ARGUMENT WHEN LOCATION WILL BE implemented
 		        json = userFunctions.getUsers();
-		        Log.d("ALL THE USERS: PRIVATETAB", json.toString());
+		        //Log.d("ALL THE USERS: PRIVATETAB", json.toString());
 		        if (userFunctions.bn == 1){
 		        	return null;
 		        }
@@ -94,11 +94,16 @@ public class PrivateTab extends Activity
 								map.put("name", name);
 								map.put("lat", lat);
 								map.put("lon", lon);
+								// creating new HashMap
+								HashMap<String, String> map1 = new HashMap<String, String>();
+								map1.put("regId", regId);
 								if(!cServerid.equals(id)){
 									 only_names.add(name);
 									 userList.add(map);
+									 Global.userList.add(map1);
 								 }
 							 }
+							 
 						}
 		        	}
         		}catch (JSONException e) {
@@ -197,6 +202,7 @@ public class PrivateTab extends Activity
         case R.id.menu_refresh:
         	final ArrayList<CharSequence> only_names = new ArrayList<CharSequence>();
         	final ArrayList<HashMap<String, String>> userList1 = new ArrayList<HashMap<String, String>>();
+        	final ArrayList<HashMap<String, String>> userList2 = new ArrayList<HashMap<String, String>>();
         	refreshTask = new AsyncTask<Void, Void, Void>(){
         		@Override
                 protected Void doInBackground(Void... params) {
@@ -210,6 +216,7 @@ public class PrivateTab extends Activity
     						String res = json.getString(TAG_SUCCESS);
     						if(Integer.parseInt(res) == 1){
     							userArray = json.getJSONArray(TAG_USERS);
+    							//Global.userList.clear();
     							 for(int i = 0; i < userArray.length(); i++){
     								 c = userArray.getJSONObject(i);
     								 String id = c.getString(TAG_ID);
@@ -224,11 +231,17 @@ public class PrivateTab extends Activity
     								map.put("name", name);
     								map.put("lat", lat);
     								map.put("lon", lon);
-    								 if(!cServerid.equals(id)){
+    								// creating new HashMap
+    								HashMap<String, String> map1 = new HashMap<String, String>();
+    								map1.put("regId", regId);
+    								if(!cServerid.equals(id)){
     									 only_names.add(name);
     									 userList1.add(map);
+    									 userList2.add(map1);
     								 }
     							 }
+    							 Global.userList = userList2;
+    							 
     						}
     		        	}
             		}catch (JSONException e) {

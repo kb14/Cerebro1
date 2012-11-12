@@ -2,8 +2,6 @@ package com.codename51.cerebro;
 
 import static com.codename51.cerebro.CommonUtilities.SERVER_URL;
 import static com.codename51.cerebro.CommonUtilities.TAG;
-import static com.codename51.cerebro.CommonUtilities.displayMessage;
- 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -49,7 +47,7 @@ public final class ServerUtilities {
                         R.string.server_registering, i, MAX_ATTEMPTS));*/
                 post(serverUrl, params);
                 GCMRegistrar.setRegisteredOnServer(context, true);
-                String message = context.getString(R.string.server_registered);
+                context.getString(R.string.server_registered);
                 //CommonUtilities.displayMessage(context, message);
                 return;
             } catch (IOException e) {
@@ -73,9 +71,8 @@ public final class ServerUtilities {
                 backoff *= 2;
             }
         }
-        String message = context.getString(R.string.server_register_error,
+        context.getString(R.string.server_register_error,
                 MAX_ATTEMPTS);
-        //CommonUtilities.displayMessage(context, message);
     }
     
     
