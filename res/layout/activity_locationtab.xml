@@ -3,19 +3,36 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-	<TextView 
-	    android:id="@+id/chat_list"
-	    android:text="JAA YAAR!!!"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:scrollbars="vertical"
-	/>
+	
 	<EditText
-	    android:id="@+id/chat_box"
+	    android:id="@+id/nameBox"
 	    android:inputType="text"
-	    android:layout_below="@+id/chat_list"
-	    android:layout_width="fill_parent"
+	    android:hint="@string/username"
+	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentTop="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_toLeftOf="@+id/findButton"
 	/>
+
+	<Button
+	    android:id="@+id/findButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/myMapView"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentTop="true"
+	    android:text="@string/find" />
+	
+	<com.google.android.maps.MapView
+	    android:id="@+id/myMapView"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_below="@+id/nameBox"
+	    android:layout_centerHorizontal="true"
+	    android:apiKey="0dAImqgrZbZl0cXa4k2hzLZXo4sQ9xY0MoQI0UA"
+	    android:clickable="true"
+	    android:state_enabled="true" >
+	</com.google.android.maps.MapView>
+	
 </RelativeLayout>

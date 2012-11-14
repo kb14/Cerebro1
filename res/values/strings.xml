@@ -9,6 +9,8 @@
     <string name="fill_details">Fill your details</string>
     <string name="fname">User Name</string>
     <string name="lname">Last Name</string>
+    <string name="find">Find</string>
+    <string name="username">Username</string>
     <string name="phone">Phone No.</string>
     <string name="pass">Password</string>
     <string name="confirm_pass">Confirm Password</string>
