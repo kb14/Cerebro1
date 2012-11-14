@@ -9,7 +9,7 @@ if (isset($_POST["name"])){
 	// response Array
     $response = array("success" => 0, "error" => 0);
 	
-	$result = mysql_query("SELECT * FROM cerebro_users WHERE online = $one AND name = $name") or die(mysql_error());
+	$result = mysql_query("SELECT * FROM cerebro_users WHERE online = '$one' AND name = '$name'") or die(mysql_error());
 	
 	// check for empty result
 	if (mysql_num_rows($result) > 0) {

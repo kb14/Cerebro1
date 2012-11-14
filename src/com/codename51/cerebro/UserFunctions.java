@@ -8,6 +8,7 @@ import static com.codename51.cerebro.CommonUtilities.CHAT_URL;
 import static com.codename51.cerebro.CommonUtilities.GETUSERS_URL;
 import static com.codename51.cerebro.CommonUtilities.UPDATEREGID_URL;
 import static com.codename51.cerebro.CommonUtilities.GETLATLONG_URL;
+import static com.codename51.cerebro.CommonUtilities.UPDATELOC_URL;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -64,6 +65,25 @@ public class UserFunctions {
 			return json;
 	    	
 	    }
+	    
+	    /**
+	     * Update USer location.
+	     *
+	     */
+	    public JSONObject updateLocation(String serverid, String lat, String lon){
+	    	List<NameValuePair> params = new ArrayList<NameValuePair>();
+	    	params.add(new BasicNameValuePair("serverid", serverid));
+	    	params.add(new BasicNameValuePair("latitude", lat));
+	    	params.add(new BasicNameValuePair("longitude", lon));
+	    	
+	    	JSONObject json = jsonParser.getJSONFromUrl(UPDATELOC_URL, params);
+	    	if(jsonParser.an == 1){
+				bn = 1;
+			}
+			return json;
+	    }
+	    
+	    
 	    
 	    /**
 	     * Update User Registration ID

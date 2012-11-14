@@ -33,18 +33,24 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LocationTab extends MapActivity implements OnClickListener{
 	
 	// lat, longs and other Location Declarations
 	double latitude = 0;
 	double longitude = 0;
+	//Find User's lat/lon
+	double usrLat = 0;
+	double usrLon = 0;
 	LocationHelper locHelper;
 	Location currentLocation;
 	private boolean hasLocation = false;
 	List<Overlay> mapOverlays;
 	
-	AsyncTask<Void, Void, Void> logoutTask, findUserTask;
+	Context cxt;
+	JSONObject json;
+	AsyncTask<Void, Void, Void> logoutTask, findUserTask, updateLocationTask;
 	// Buttons and EditTexts
 	Button btnFind;
 	EditText txtUsername;
@@ -56,11 +62,15 @@ public class LocationTab extends MapActivity implements OnClickListener{
 	//Find Username
 	String userName = "";
 	UserFunctions userFunctions = new UserFunctions();
+	SqliteHandler db;
+	int error = 0;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_locationtab);
         
+        cxt = getApplicationContext();
+        db = new SqliteHandler(cxt);
         txtUsername = (EditText) findViewById(R.id.nameBox) ;
         btnFind = (Button) findViewById(R.id.findButton);
         btnFind.setOnClickListener(this);
@@ -87,7 +97,7 @@ public class LocationTab extends MapActivity implements OnClickListener{
 			findUserTask = new AsyncTask<Void, Void, Void>(){
 				@Override
                 protected Void doInBackground(Void... params) {
-					JSONObject json = userFunctions.getUserLatLong(userName);
+					json = userFunctions.getUserLatLong(userName);
 					if (userFunctions.bn == 1){
 						return null;
 					}
@@ -98,12 +108,22 @@ public class LocationTab extends MapActivity implements OnClickListener{
 							if(Integer.parseInt(res) == 1){
 								String lat1 = json.getString("latitude");
 								String lon1 = json.getString("longitude");
-								//Now Go to Clone Location Tab
-								//Or try to find a solution here
+								Log.d("LAT LONG", lat1+" "+lon1);
+								if(Double.parseDouble(lat1)==0 && Double.parseDouble(lon1)==0){
+									//User location not updated
+									error = 1;
+								}
+								else{
+									//Now Go to Clone Location Tab
+									//Or try to find a solution here
+									usrLat = Double.parseDouble(lat1);
+									usrLon = Double.parseDouble(lon1);
+								}
 							}
 							else{
 								//USERNAME NOT FOUND OR NOT ONLINE
 								//Do Something
+								error = 2;
 								
 							}
 						}
@@ -116,9 +136,45 @@ public class LocationTab extends MapActivity implements OnClickListener{
 				}
 				@Override
                 protected void onPostExecute(Void result) {
+					if(userFunctions.bn == 1){
+						Toast.makeText(cxt, "Sorry! Connection Timeout", Toast.LENGTH_LONG).show();
+					}
+					else{
+						if(error == 1){
+							Toast.makeText(cxt, userName+" has not updated location", Toast.LENGTH_LONG).show();
+							error = 0;
+						}
+						else if(error == 2){
+							Toast.makeText(cxt, userName+" is not online right now.", Toast.LENGTH_LONG).show();
+							error= 0;
+						}
+						else{
+							//Lat longitude found for the given username
+							runOnUiThread(new Runnable() {
+								public void run() {
+									//Drawable and Marker Stuff
+							        mapOverlays = myMapView.getOverlays();
+							        if(!mapOverlays.isEmpty()){ 
+								        mapOverlays.clear(); 
+								        myMapView.invalidate();
+
+							        }
+							        Drawable drawable = cxt.getResources().getDrawable(R.drawable.ic_maps_indicator_current_position);
+							        MyItemizedOverlay itemizedoverlay = new MyItemizedOverlay(drawable, cxt);
+									GeoPoint point = getPoint(usrLat, usrLon);
+						    		OverlayItem overlayitem = new OverlayItem(point, userName, "Last known location");
+						    		itemizedoverlay.addOverlay(overlayitem);
+						    		
+						    		mapController.setCenter(getPoint(usrLat, usrLon));
+						    		mapOverlays.add(itemizedoverlay);
+								}
+							});
+						}
+					}
                     findUserTask = null;
                  }
 			};
+			findUserTask.execute(null, null, null);
 			
 			break;
 		}
@@ -158,9 +214,31 @@ public class LocationTab extends MapActivity implements OnClickListener{
         	latitude = currentLocation.getLatitude();
 			longitude = currentLocation.getLongitude();
 			
-			String lat = Double.toString(latitude);
-			String lon = Double.toString(longitude);
-			
+			final String lat = Double.toString(latitude);
+			final String lon = Double.toString(longitude);
+			updateLocationTask = new AsyncTask<Void, Void, Void>(){	
+				@Override
+                protected Void doInBackground(Void... params) {
+					//Update Location
+					HashMap<String, String> userdb = db.getUserDetails();
+					String serverid = userdb.get("serverid");
+					JSONObject json1 = userFunctions.updateLocation(serverid, lat, lon);
+					try {
+						Log.d("SUCCESS IN UPDATE LOC", json1.getString("success"));
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return null;
+				}
+				protected void onPostExecute(Void result) {
+					// dismiss the dialog after getting all restaurants
+					//pDialog.dismiss();
+					updateLocationTask = null;
+					
+            	}
+			};	
+			updateLocationTask.execute(null, null, null);
 			//Drawable and Marker Stuff
 	        mapOverlays = myMapView.getOverlays();
 	        if(!mapOverlays.isEmpty()){ 

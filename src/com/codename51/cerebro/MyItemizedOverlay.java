@@ -42,7 +42,7 @@ public class MyItemizedOverlay extends ItemizedOverlay {
 	  AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
 	  dialog.setTitle(item.getTitle());
 	  dialog.setMessage(item.getSnippet());
-	  dialog.show();
+	  //dialog.show();
 	  return true;
 	}
 
