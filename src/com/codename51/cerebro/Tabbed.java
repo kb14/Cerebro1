@@ -23,17 +23,8 @@ import android.widget.TabHost.TabSpec;
 @SuppressWarnings("deprecation")
 public class Tabbed extends TabActivity
 {
-	// lat, longs and other Location Declarations
-	double latitude = 0;
-	double longitude = 0;
-	//Find User's lat/lon
-	double usrLat = 0;
-	double usrLon = 0;
-	LocationHelper locHelper;
-	Location currentLocation;
-	private boolean hasLocation = false;
-	
-    // TabSpec Names
+
+	// TabSpec Names
     private static final String Private_SPEC = "Private Chat";
     private static final String Public_SPEC = "Public Chat";
     private static final String Location_SPEC = "Track Location";
@@ -46,7 +37,7 @@ public class Tabbed extends TabActivity
     ConnectionDetector cd;
     String regId = "";
     UserFunctions userFunctions;
-    SqliteHandler db;
+
     JSONObject json;
     
     public static String name;
@@ -64,7 +55,6 @@ public class Tabbed extends TabActivity
         TabHost tabHost = getTabHost();
         
         userFunctions = new UserFunctions();
-        db = new SqliteHandler(getApplicationContext());
         cd = new ConnectionDetector(getApplicationContext());
  
         // Check if Internet present
@@ -77,54 +67,7 @@ public class Tabbed extends TabActivity
             return;
         }
         
-        locHelper = new LocationHelper(this, this);
-        Context context = getApplicationContext();
-		locHelper.getLocation(context, locationResult);
-		
-		//Wait 10 seconds to see if we can get a location from either network or GPS, otherwise stop
-		
-		Long t = Calendar.getInstance().getTimeInMillis();
-        while (!hasLocation && Calendar.getInstance().getTimeInMillis() - t < 15000) {
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        };
-
-        if(currentLocation != null){
-        	latitude = currentLocation.getLatitude();
-			longitude = currentLocation.getLongitude();
-			final String lat = Double.toString(latitude);
-			final String lon = Double.toString(longitude);
-			updateLocationTask = new AsyncTask<Void, Void, Void>(){	
-				@Override
-                protected Void doInBackground(Void... params) {
-					//Update Location
-					HashMap<String, String> userdb = db.getUserDetails();
-					String serverid = userdb.get("serverid");
-					String name = userdb.get("name");
-					String regid = userdb.get("regid");
-					// Clear all previous data in database
-					userFunctions.logoutUser(getApplicationContext());
-					db.addUserwLatLong(Integer.parseInt(serverid), name, regid, lat, lon);
-					JSONObject json1 = userFunctions.updateLocation(serverid, lat, lon);
-					try {
-						Log.d("SUCCESS IN UPDATE LOC", json1.getString("success"));
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					return null;
-				}
-				protected void onPostExecute(Void result) {
-					updateLocationTask = null;
-					
-            	}
-			};	
-			updateLocationTask.execute(null, null, null);
-        }	
-        
+       
         // Make sure the device has the proper dependencies.
         GCMRegistrar.checkDevice(this);
         GCMRegistrar.checkManifest(this);
@@ -194,14 +137,6 @@ public class Tabbed extends TabActivity
         tabHost.addTab(locationSpec); // Adding Profile tab
     }
     
-    public LocationResult locationResult = new LocationResult(){
-        @Override
-        public void gotLocation(final Location location)
-        {
-            currentLocation = new Location(location);
-            hasLocation = true;
-        }
-    };
     
     
    /* @Override

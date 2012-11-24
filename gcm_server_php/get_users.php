@@ -4,7 +4,7 @@
 if(isset($_GET["latitude"]) && isset($_GET["longitude"])){
 	include_once './db_functions.php';
 	$db = new DB_Functions();
-
+	$distance = 0;
 	$one = 1;
 	$latitude = $_GET["latitude"];
 	$longitude = $_GET["longitude"];
@@ -20,8 +20,8 @@ if(isset($_GET["latitude"]) && isset($_GET["longitude"])){
 			$lat = $row["latitude"];
 			$lon = $row["longitude"];
 			
-			$distance = $fn->getDistanceBetweenPointsNew($latitude, $longitude, $lat, $lon);
-			if($distance < 3){
+			$distance = $db->getDistanceBetweenPointsNew(floatval($latitude), floatval($longitude), floatval($lat), floatval($lon));
+			if($distance < 2){
 				$user = array();
 				
 				$user["id"] = $row["id"];
@@ -37,7 +37,7 @@ if(isset($_GET["latitude"]) && isset($_GET["longitude"])){
 
 		// success
 		$response["success"] = 1;
-
+		$response["distance"] = $distance;
 		// echoing JSON response
 		echo json_encode($response);
 	}

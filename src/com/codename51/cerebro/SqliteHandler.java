@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class SqliteHandler extends SQLiteOpenHelper {
 	
@@ -80,6 +81,7 @@ public class SqliteHandler extends SQLiteOpenHelper {
 		values.put(KEY_SERVERID, serverid); //Server id - Unique id of this user at server
 		values.put(KEY_NAME, name); // Name
 		values.put(KEY_REGID, regid); // Regid
+		//Log.d("PRINT IN SQLITE FOR LAT", latitude + " "+ longitude);
 		values.put(KEY_LATITUDE, latitude);
 		values.put(KEY_LONGITUDE, longitude);
 		
@@ -105,6 +107,8 @@ public class SqliteHandler extends SQLiteOpenHelper {
         	user.put("serverid", cursor.getString(1));
         	user.put("name", cursor.getString(2));
         	user.put("regid", cursor.getString(3));
+        	user.put("latitude", cursor.getString(4));
+        	user.put("longitude", cursor.getString(5));
         }
         cursor.close();
         db.close();

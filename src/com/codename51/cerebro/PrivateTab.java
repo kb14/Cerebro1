@@ -47,7 +47,7 @@ public class PrivateTab extends Activity
     
     
     String cServerid="",cName="",cRegid="";
-    String cLatitude = "", cLongitude = "";
+    String cLatitude = "lat", cLongitude = "";
     
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -61,7 +61,7 @@ public class PrivateTab extends Activity
         cRegid = user.get("regid");
         cLatitude = user.get("latitude");
         cLongitude = user.get("longitude");
-        Log.d("cServerid PRIVATE.JAVA", cServerid);
+        Log.d("cServerid PRIVATE.JAVA", cLatitude);
         
         pvtList=(ListView) findViewById(R.id.pvt_list);
         final ArrayList<HashMap<String, String>> userList = new ArrayList<HashMap<String, String>>();
@@ -210,7 +210,11 @@ public class PrivateTab extends Activity
         	refreshTask = new AsyncTask<Void, Void, Void>(){
         		@Override
                 protected Void doInBackground(Void... params) {
-        			json = userFunctions.getUsers();
+        			SqliteHandler ldb = new SqliteHandler(getApplicationContext());
+        			HashMap<String, String> users = ldb.getUserDetails();
+        			String cLat = users.get("latitude");
+        			String cLon = users.get("longitude");
+        			json = userFunctions.getUsers(cLat, cLon);
     		        if (userFunctions.bn == 1){
     		        	return null;
     		        }
