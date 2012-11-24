@@ -17,6 +17,19 @@ class DB_Functions {
     function __destruct() {
  
     }
+	
+	/* The distance calculating function*/
+	
+	public function getDistanceBetweenPointsNew($latitude1, $longitude1, $latitude2, $longitude2) { 
+		$theta = $longitude1 - $longitude2; 
+		$distance = (sin(deg2rad($latitude1)) * sin(deg2rad($latitude2))) + (cos(deg2rad($latitude1)) * cos(deg2rad($latitude2)) * cos(deg2rad($theta))); 
+		$distance = acos($distance); 
+		$distance = rad2deg($distance); 
+		$distance = $distance * 60 * 1.1515;  //answer in miles
+		return (round($distance,5)); 
+	}
+	
+	
 	/**
      * Check user is existed or not
      */

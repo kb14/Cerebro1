@@ -222,6 +222,11 @@ public class LocationTab extends MapActivity implements OnClickListener{
 					//Update Location
 					HashMap<String, String> userdb = db.getUserDetails();
 					String serverid = userdb.get("serverid");
+					String name = userdb.get("name");
+					String regid = userdb.get("regid");
+					// Clear all previous data in database
+					userFunctions.logoutUser(getApplicationContext());
+					db.addUserwLatLong(Integer.parseInt(serverid), name, regid, lat, lon);
 					JSONObject json1 = userFunctions.updateLocation(serverid, lat, lon);
 					try {
 						Log.d("SUCCESS IN UPDATE LOC", json1.getString("success"));

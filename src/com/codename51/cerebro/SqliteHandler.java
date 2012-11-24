@@ -73,6 +73,21 @@ public class SqliteHandler extends SQLiteOpenHelper {
 		db.close(); // Closing database connection
 	}
 	
+	public void addUserwLatLong(int serverid, String name, String regid, String latitude, String longitude) {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_SERVERID, serverid); //Server id - Unique id of this user at server
+		values.put(KEY_NAME, name); // Name
+		values.put(KEY_REGID, regid); // Regid
+		values.put(KEY_LATITUDE, latitude);
+		values.put(KEY_LONGITUDE, longitude);
+		
+		// Inserting Row
+		db.insert(TABLE_LOGIN, null, values);
+		db.close(); // Closing database connection
+	}
+	
 	
 	
 	/**

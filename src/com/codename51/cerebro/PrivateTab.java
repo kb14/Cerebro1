@@ -47,6 +47,8 @@ public class PrivateTab extends Activity
     
     
     String cServerid="",cName="",cRegid="";
+    String cLatitude = "", cLongitude = "";
+    
 	public void onCreate(Bundle savedInstanceState)
 	{
         super.onCreate(savedInstanceState);
@@ -57,6 +59,8 @@ public class PrivateTab extends Activity
         cServerid = user.get("serverid");
         cName = user.get("name");
         cRegid = user.get("regid");
+        cLatitude = user.get("latitude");
+        cLongitude = user.get("longitude");
         Log.d("cServerid PRIVATE.JAVA", cServerid);
         
         pvtList=(ListView) findViewById(R.id.pvt_list);
@@ -69,7 +73,7 @@ public class PrivateTab extends Activity
             protected Void doInBackground(Void... params) {
 		        //ojson = new JSONObject(user_json);
 		        // LATITUDE LONGITUDE WILL GO AS ARGUMENT WHEN LOCATION WILL BE implemented
-		        json = userFunctions.getUsers();
+		        json = userFunctions.getUsers(cLatitude, cLongitude);
 		        //Log.d("ALL THE USERS: PRIVATETAB", json.toString());
 		        if (userFunctions.bn == 1){
 		        	return null;

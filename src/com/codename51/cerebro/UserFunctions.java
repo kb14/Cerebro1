@@ -120,9 +120,10 @@ public class UserFunctions {
 	     * Get Online Users
 	     */
 	    
-	    public JSONObject getUsers(){
+	    public JSONObject getUsers(String latitude, String longitude){
 	    	List<NameValuePair> params = new ArrayList<NameValuePair>(); 
-	    	//Here goes the location stuff
+	    	params.add(new BasicNameValuePair("latitude", latitude));
+	    	params.add(new BasicNameValuePair("longitude", longitude));
 	    	JSONObject json = jsonParser.makeHttpRequest(GETUSERS_URL, "GET", params);
 	    	if(jsonParser.an == 1){
 				bn = 1;
