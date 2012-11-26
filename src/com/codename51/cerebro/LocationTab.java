@@ -336,8 +336,13 @@ public class LocationTab extends MapActivity implements OnClickListener{
 						e.printStackTrace();
 					}
             		uf.logoutUser(getApplicationContext());
+            		/*
+            		 * Uncommenting the code below will result in not saving message history after log out
+            		 */
             		MessageHandler mh = new MessageHandler(getApplicationContext());
             		mh.resetTables();
+            		MessageHandler2 mh2 = new MessageHandler2(getApplicationContext());
+            		mh2.resetTables();
             		return null;
             	}
             	protected void onPostExecute(Void result) {

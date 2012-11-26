@@ -2,11 +2,12 @@ package com.codename51.cerebro;
 
 import static com.codename51.cerebro.CommonUtilities.DISPLAY_MESSAGE_ACTION;
 import static com.codename51.cerebro.CommonUtilities.EXTRA_MESSAGE;
+import static com.codename51.cerebro.CommonUtilities.KEY_SUCCESS;
+import static com.codename51.cerebro.CommonUtilities.displayMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,7 +38,7 @@ public class PublicTab extends Activity implements OnClickListener{
     Button btnSendMessage;
     String chatMessage = "";
 	AsyncTask<Void, Void, Void> logoutTask, sendMessageTask;
-	
+	String cName = "" ;
 	UserFunctions userFunctions;
 	//User List
 	ArrayList <HashMap<String, String>> userList = new ArrayList<HashMap<String, String>>();
@@ -51,13 +52,7 @@ public class PublicTab extends Activity implements OnClickListener{
         chat = (EditText) findViewById(R.id.chat) ;
         btnSendMessage = (Button) findViewById(R.id.sendMessageButton);
         btnSendMessage.setOnClickListener(this);
-        /*
-         * Test Code Start
-         */
-        //HashMap<String, String> map = new HashMap<String, String>();
-        //map.put("regId", "avracadabra5678");
-        //userList.add(map);
-        //Test code end 
+       
         registerReceiver(mHandleMessageReceiver, new IntentFilter(
                 DISPLAY_MESSAGE_ACTION));
         
@@ -67,9 +62,13 @@ public class PublicTab extends Activity implements OnClickListener{
 	 public void onResume() {
          super.onResume();
          
-         Log.d("TESTING MAN", "Testing man");
-         MessageHandler mh = new MessageHandler(getApplicationContext());
+         //Commenting Out for now
+        /* MessageHandler2 mh2 = new MessageHandler2(getApplicationContext());
 	     ArrayList<String> chatHistory = new ArrayList<String>();
+	     chatHistory = mh2.getChatHistory();
+	        for(int j = 0; j<chatHistory.size(); j++){
+	        	lblMessage.append(chatHistory.get(j) + "\n");
+	        }*/
 	     
 	 }    
 		
@@ -83,11 +82,28 @@ public class PublicTab extends Activity implements OnClickListener{
 			sendMessageTask = new AsyncTask<Void, Void, Void>(){
 				@Override
                 protected Void doInBackground(Void... params) {
-					userList = Global.userList;
-					JSONArray userArray = new JSONArray(userList);
-					Log.d("PUBLIC: JSONARRAY USER", userArray.toString());
-			        
-				       
+					SqliteHandler usr = new SqliteHandler(getApplicationContext());
+	 				HashMap<String,String> user = usr.getUserDetails();
+	 				cName = user.get("name");
+	 				String sid = user.get("serverid");
+	 				String lat = user.get("latitude");
+	 				String lon = user.get("longitude");
+	 				Log.d("PUBLIC TAB LAT CHECK", lat);
+	 				JSONObject json1 = userFunctions.sendPublicChat(cName, chatMessage, sid, lat, lon);
+	 				try {
+    					if (json1.getString(KEY_SUCCESS) != null) {
+    						String res = json1.getString(KEY_SUCCESS);
+    						if(Integer.parseInt(res) == 1){
+    							Log.d("MESSAGE_FROMPHP", "Message Sent");
+    						}
+    						else{
+    							Log.d("MESSAGE", "Message Sending Error");
+    						}
+    					}
+	    			}catch (JSONException e) {
+	    				e.printStackTrace();
+	    			}
+					       
 					return null;
 				}
 				@Override
@@ -95,7 +111,14 @@ public class PublicTab extends Activity implements OnClickListener{
                     sendMessageTask = null;
                  }
 			};
+			chat.setText("");
+			SqliteHandler db = new SqliteHandler(getApplicationContext());
+			HashMap<String,String> user = db.getUserDetails();
+			cName = user.get("name");
+			displayMessage(getApplicationContext(), cName + ": "+ chatMessage, "public");
 			sendMessageTask.execute(null, null, null);
+			MessageHandler2 mh2 = new MessageHandler2(getApplicationContext());
+    		mh2.storeMessage(cName, chatMessage);
 			break;
 		}
 		
@@ -116,21 +139,24 @@ public class PublicTab extends Activity implements OnClickListener{
     	 @Override
 	     public void onReceive(Context context, Intent intent) {
     		 String newMessage = intent.getExtras().getString(EXTRA_MESSAGE);
-    		 // Waking up mobile if it is sleeping
-	         WakeLocker.acquire(getApplicationContext());
-	         lblMessage.append(newMessage + "\n");
-	         // find the amount we need to scroll.  This works by
-	         // asking the TextView's internal layout for the position
-	         // of the final line and then subtracting the TextView's height
-	         final int scrollAmount = lblMessage.getLayout().getLineTop(lblMessage.getLineCount())
-	                 -lblMessage.getHeight();
-	         // if there is no need to scroll, scrollAmount will be <=0
-	         if(scrollAmount>0)
-	             lblMessage.scrollTo(0, scrollAmount);
-	         else
-	             lblMessage.scrollTo(0,0);
-	         // Releasing wake lock
-	         WakeLocker.release();
+    		 String helper = intent.getExtras().getString("helper");
+    		 if(helper.equals("public")){
+	    		 // Waking up mobile if it is sleeping
+		         WakeLocker.acquire(getApplicationContext());
+		         lblMessage.append(newMessage + "\n");
+		         // find the amount we need to scroll.  This works by
+		         // asking the TextView's internal layout for the position
+		         // of the final line and then subtracting the TextView's height
+		         final int scrollAmount = lblMessage.getLayout().getLineTop(lblMessage.getLineCount())
+		                 -lblMessage.getHeight();
+		         // if there is no need to scroll, scrollAmount will be <=0
+		         if(scrollAmount>0)
+		             lblMessage.scrollTo(0, scrollAmount);
+		         else
+		             lblMessage.scrollTo(0,0);
+		         // Releasing wake lock
+		         WakeLocker.release();
+    		 }
     	 }
     };
     
@@ -177,8 +203,13 @@ public class PublicTab extends Activity implements OnClickListener{
 						e.printStackTrace();
 					}
             		uf.logoutUser(getApplicationContext());
+            		/*
+            		 * Uncommenting the code below will result in not saving message history after log out
+            		 */
             		MessageHandler mh = new MessageHandler(getApplicationContext());
             		mh.resetTables();
+            		MessageHandler2 mh2 = new MessageHandler2(getApplicationContext());
+            		mh2.resetTables();
             		return null;
             	}
             	protected void onPostExecute(Void result) {

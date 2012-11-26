@@ -90,7 +90,7 @@ public final class ServerUtilities {
             post(serverUrl, params);
             GCMRegistrar.setRegisteredOnServer(context, false);
             String message = context.getString(R.string.server_unregistered);
-            CommonUtilities.displayMessage(context, message);
+            //CommonUtilities.displayMessage(context, message);
         } catch (IOException e) {
             // At this point the device is unregistered from GCM, but still
             // registered in the server.
@@ -99,7 +99,7 @@ public final class ServerUtilities {
             // a "NotRegistered" error message and should unregister the device.
             String message = context.getString(R.string.server_unregister_error,
                     e.getMessage());
-            CommonUtilities.displayMessage(context, message);
+            //CommonUtilities.displayMessage(context, message);
         }
     }
  

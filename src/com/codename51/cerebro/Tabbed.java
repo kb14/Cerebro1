@@ -2,18 +2,14 @@ package com.codename51.cerebro;
 
 import static com.codename51.cerebro.CommonUtilities.SENDER_ID;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.codename51.cerebro.LocationHelper.LocationResult;
 import com.google.android.gcm.GCMRegistrar;
 
 import android.app.TabActivity;
-import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,12 +36,6 @@ public class Tabbed extends TabActivity
 
     JSONObject json;
     
-    public static String name;
-    public static String password;
-    public static String serverId;
-    public static String regId1;
-    public static int indicator = 0;
- 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -73,10 +63,11 @@ public class Tabbed extends TabActivity
         GCMRegistrar.checkManifest(this);
         // Get GCM registration id
         regId = GCMRegistrar.getRegistrationId(this);
-        
+        //Log.d("TABBED REGID CHECK", regId);
+        System.out.println("HELO TABBED" + " and  " + regId);
         if(userFunctions.isUserLoggedIn(getApplicationContext())){
         	if (regId.equals("")) {
-        		indicator = 1;
+        		Global.indicator = 2;
         		// Registration is not present, register now with GCM
                 GCMRegistrar.register(this, SENDER_ID);
             }

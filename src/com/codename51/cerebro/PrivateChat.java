@@ -64,6 +64,7 @@ public class PrivateChat extends Activity implements OnClickListener{
 	        name = i.getStringExtra("name");
 	        serverid = i.getStringExtra("serverid");
 	        regId = i.getStringExtra("regId");
+	        Global.currentUser = Integer.parseInt(serverid);
 	        
 	        MessageHandler mh = new MessageHandler(getApplicationContext());
 	        ArrayList<String> chatHistory = new ArrayList<String>();
@@ -109,7 +110,7 @@ public class PrivateChat extends Activity implements OnClickListener{
 		 			
 		 		};
 		 		chat.setText("");
-	    		displayMessage(getApplicationContext(),"ME: "+ chatMessage);
+	    		displayMessage(getApplicationContext(),"ME: "+ chatMessage, "private");
 	    		indicator = 1;
 	    		sendMessageTask.execute(null, null, null);
 	    		MessageHandler mh = new MessageHandler(getApplicationContext());
@@ -125,35 +126,37 @@ public class PrivateChat extends Activity implements OnClickListener{
 	        @Override
 	        public void onReceive(Context context, Intent intent) {
 	            String newMessage = intent.getExtras().getString(EXTRA_MESSAGE);
-	            //System.out.println(newMessage);
+	            String helper = intent.getExtras().getString("helper");
 	            
-	            // Waking up mobile if it is sleeping
-	            WakeLocker.acquire(getApplicationContext());
-	 
-	            /**
-	             * Displaying message on the screen 
-	             * */
-	            
-	            // Showing received message
-	            if(indicator == 1 ){
-	            	lblMessage.append(newMessage + "\n");
+	            if(helper.equals("private")){
+		            // Waking up mobile if it is sleeping
+		            WakeLocker.acquire(getApplicationContext());
+		 
+		            /**
+		             * Displaying message on the screen 
+		             * */
+		            
+		            // Showing received message
+		            if(indicator == 1 ){
+		            	lblMessage.append(newMessage + "\n");
+		            }
+		            else{
+		            	lblMessage.append(name.toUpperCase()+ ": " + newMessage + "\n");
+		            } 
+		            indicator = 0;
+		            // find the amount we need to scroll.  This works by
+		            // asking the TextView's internal layout for the position
+		            // of the final line and then subtracting the TextView's height
+		            final int scrollAmount = lblMessage.getLayout().getLineTop(lblMessage.getLineCount())
+		                    -lblMessage.getHeight();
+		            // if there is no need to scroll, scrollAmount will be <=0
+		            if(scrollAmount>0)
+		                lblMessage.scrollTo(0, scrollAmount);
+		            else
+		                lblMessage.scrollTo(0,0);
+		            // Releasing wake lock
+		            WakeLocker.release();
 	            }
-	            else{
-	            	lblMessage.append(name.toUpperCase()+ ": " + newMessage + "\n");
-	            } 
-	            indicator = 0;
-	            // find the amount we need to scroll.  This works by
-	            // asking the TextView's internal layout for the position
-	            // of the final line and then subtracting the TextView's height
-	            final int scrollAmount = lblMessage.getLayout().getLineTop(lblMessage.getLineCount())
-	                    -lblMessage.getHeight();
-	            // if there is no need to scroll, scrollAmount will be <=0
-	            if(scrollAmount>0)
-	                lblMessage.scrollTo(0, scrollAmount);
-	            else
-	                lblMessage.scrollTo(0,0);
-	            // Releasing wake lock
-	            WakeLocker.release();
 	        }
 	    };
 	    

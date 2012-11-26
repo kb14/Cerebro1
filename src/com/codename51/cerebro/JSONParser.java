@@ -89,7 +89,7 @@ public class JSONParser {
 			}
 			is.close();
 			json = sb.toString();
-			Log.e("JSON", json);
+			Log.e("JSON Check 1", json);
 		} catch (Exception e) {
 			Log.e("Buffer Error", "Error converting result " + e.toString());
 		}
@@ -98,7 +98,7 @@ public class JSONParser {
 		try {
 			jObj = new JSONObject(json);			
 		} catch (JSONException e) {
-			Log.e("JSON Parser", "Error parsing data " + e.toString());
+			Log.e("JSON Parser Check 2", "Error parsing data " + e.toString());
 		}
 
 		// return JSON String

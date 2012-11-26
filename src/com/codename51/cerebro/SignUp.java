@@ -18,7 +18,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -52,6 +51,9 @@ public class SignUp extends Activity implements OnClickListener
     JSONObject json;
     // Progress Dialog
  	private ProgressDialog pDialog;
+ 	
+ 	static String name = "";
+	static String password = "";
 	@Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -106,8 +108,8 @@ public class SignUp extends Activity implements OnClickListener
 		case R.id.create:
 			//Toast.makeText(this, "Account Created", Toast.LENGTH_LONG);
 			// Read EditText dat
-            final String name = txtName.getText().toString();
-            final String password = txtPassword.getText().toString();
+            name = txtName.getText().toString();
+            password = txtPassword.getText().toString();
             String cPassword = cnfmPassword.getText().toString();
             
             // Check if user filled the form
@@ -115,8 +117,15 @@ public class SignUp extends Activity implements OnClickListener
             	if(password.equals(cPassword)){
             		// Check if regid already presents
                     if (regId.equals("")) {
+                    	Global.indicator = 1;
                     	// Registration is not present, register now with GCM
                         GCMRegistrar.register(this, SENDER_ID);
+                        // Launch Tabbed View
+                		Intent i = new Intent(getApplicationContext(), Tabbed.class);
+                		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
+                        // Close Signup Screen
+    					finish();
                     }
                     else{
                     	final Context context = this;
@@ -161,7 +170,7 @@ public class SignUp extends Activity implements OnClickListener
                                 UserFunctions uFunctions = new UserFunctions();
                                 
                                 json = uFunctions.loginUser(name, password);
-                                Log.d("LOGIN DURIN REG SIGNUP.JAVA", json.toString());
+                                //Log.d("LOGIN DURIN REG SIGNUP.JAVA", json.toString());
                                 try {
                         			if (json.getString(KEY_SUCCESS) != null) {
                         				String res = json.getString(KEY_SUCCESS);

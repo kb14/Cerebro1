@@ -121,7 +121,8 @@ public class PrivateTab extends Activity
 	        	// updating UI from Background Thread
 				runOnUiThread(new Runnable() {
 					public void run() {
-						pvtAdap=new ArrayAdapter<CharSequence>(PrivateTab.this, R.layout.private_tab_list_item, R.id.private_item, only_names);
+						//pvtAdap=new ArrayAdapter<CharSequence>(PrivateTab.this, R.layout.private_tab_list_item, R.id.private_item, only_names);
+						pvtAdap=new ArrayAdapter<CharSequence>(PrivateTab.this, android.R.layout.simple_list_item_1, only_names);
 						pvtList.setAdapter(pvtAdap);
 				        pvtList.setOnItemClickListener(new OnItemClickListener()
 						  {
@@ -151,7 +152,7 @@ public class PrivateTab extends Activity
         menuInflater.inflate(R.layout.bottommenu, menu);
         return true;
     }
-    
+     
     /**
      * Event Handling for Individual menu item selected
      * Identify single menu item by it's id
@@ -184,8 +185,13 @@ public class PrivateTab extends Activity
 						e.printStackTrace();
 					}
             		uf.logoutUser(getApplicationContext());
+            		/*
+            		 * Uncommenting the code below will result in not saving message history after log out
+            		 */
             		MessageHandler mh = new MessageHandler(getApplicationContext());
             		mh.resetTables();
+            		MessageHandler2 mh2 = new MessageHandler2(getApplicationContext());
+            		mh2.resetTables();
             		return null;
             	}
             	protected void onPostExecute(Void result) {
@@ -262,7 +268,8 @@ public class PrivateTab extends Activity
      	        	// updating UI from Background Thread
      				runOnUiThread(new Runnable() {
      					public void run() {
-     						pvtAdap=new ArrayAdapter<CharSequence>(PrivateTab.this, R.layout.private_tab_list_item, R.id.private_item, only_names);
+     						//pvtAdap=new ArrayAdapter<CharSequence>(PrivateTab.this, R.layout.private_tab_list_item, R.id.private_item, only_names);
+     						pvtAdap=new ArrayAdapter<CharSequence>(PrivateTab.this, android.R.layout.simple_list_item_1, only_names);
      						pvtList.setAdapter(pvtAdap);
      				        pvtList.setOnItemClickListener(new OnItemClickListener()
      						  {

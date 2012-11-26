@@ -15,6 +15,7 @@ public final class CommonUtilities {
     static final String UPDATEREGID_URL = "http://192.168.43.35/gcm_server_php/update_regid.php";
     static final String GETLATLONG_URL = "http://192.168.43.35/gcm_server_php/getlatlong.php";
     static final String UPDATELOC_URL = "http://192.168.43.35/gcm_server_php/update_location.php";
+    static final String PUBLICCHAT_URL = "http://192.168.43.35/gcm_server_php/send_public_chat.php";
     
     static final String KEY_SUCCESS = "success";
  
@@ -40,9 +41,10 @@ public final class CommonUtilities {
      * @param context application's context.
      * @param message message to be displayed.
      */
-    static void displayMessage(Context context, String message) {
+    static void displayMessage(Context context, String message, String helper) {
         Intent intent = new Intent(DISPLAY_MESSAGE_ACTION);
         intent.putExtra(EXTRA_MESSAGE, message);
+        intent.putExtra("helper", helper);
         context.sendBroadcast(intent);
     }
 }

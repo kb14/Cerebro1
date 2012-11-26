@@ -9,6 +9,7 @@ import static com.codename51.cerebro.CommonUtilities.GETUSERS_URL;
 import static com.codename51.cerebro.CommonUtilities.UPDATEREGID_URL;
 import static com.codename51.cerebro.CommonUtilities.GETLATLONG_URL;
 import static com.codename51.cerebro.CommonUtilities.UPDATELOC_URL;
+import static com.codename51.cerebro.CommonUtilities.PUBLICCHAT_URL;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -152,28 +153,48 @@ public class UserFunctions {
 			return json;
 	    }
 	    
+	    /**
+	     *
+	     * Send a Public Chat
+	     */
 	    
-	/**
-	 * Function get Login status
-	 * */
-	public boolean isUserLoggedIn(Context context){
-		SqliteHandler db = new SqliteHandler(context);
-		int count = db.getRowCount();
-		if(count > 0){
-			// user logged in
+	    public JSONObject sendPublicChat(String name, String message, String sid, String lat, String lon){
+	    	List<NameValuePair> params = new ArrayList<NameValuePair>();
+	    	
+	    	params.add(new BasicNameValuePair("name", name));
+	    	params.add(new BasicNameValuePair("message", message));
+	    	params.add(new BasicNameValuePair("sid", sid));
+	    	params.add(new BasicNameValuePair("latitude", lat));
+	    	params.add(new BasicNameValuePair("longitude", lon));
+	    	
+	    	JSONObject json = jsonParser.getJSONFromUrl(PUBLICCHAT_URL, params);		
+			if(jsonParser.an == 1){
+				bn = 1;
+			}
+			return json;
+	    }
+	    
+		/**
+		 * Function get Login status
+		 * */
+		public boolean isUserLoggedIn(Context context){
+			SqliteHandler db = new SqliteHandler(context);
+			int count = db.getRowCount();
+			if(count > 0){
+				// user logged in
+				return true;
+			}
+			return false;
+		}
+		
+		
+		/**
+		 * Function to logout user
+		 * Reset Database
+		 * */
+		public boolean logoutUser(Context context){
+			SqliteHandler db = new SqliteHandler(context);
+			db.resetTables();
 			return true;
 		}
-		return false;
-	}
-	
-	
-	/**
-	 * Function to logout user
-	 * Reset Database
-	 * */
-	public boolean logoutUser(Context context){
-		SqliteHandler db = new SqliteHandler(context);
-		db.resetTables();
-		return true;
-	}
 }
