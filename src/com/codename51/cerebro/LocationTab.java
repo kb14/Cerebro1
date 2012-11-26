@@ -93,6 +93,8 @@ public class LocationTab extends MapActivity implements OnClickListener{
 	public void onClick(View v){
 		switch (v.getId()){
 		case R.id.findButton:
+			if(txtUsername.getText().toString().equals(""))
+				break;
 			userName = txtUsername.getText().toString();
 			findUserTask = new AsyncTask<Void, Void, Void>(){
 				@Override

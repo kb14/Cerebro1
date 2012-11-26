@@ -52,6 +52,13 @@ public class PublicTab extends Activity implements OnClickListener{
         chat = (EditText) findViewById(R.id.chat) ;
         btnSendMessage = (Button) findViewById(R.id.sendMessageButton);
         btnSendMessage.setOnClickListener(this);
+        
+        MessageHandler2 mh2 = new MessageHandler2(getApplicationContext());
+	     ArrayList<String> chatHistory = new ArrayList<String>();
+	     chatHistory = mh2.getChatHistory();
+	        for(int j = 0; j<chatHistory.size(); j++){
+	        	lblMessage.append(chatHistory.get(j) + "\n");
+	        }
        
         registerReceiver(mHandleMessageReceiver, new IntentFilter(
                 DISPLAY_MESSAGE_ACTION));
@@ -78,6 +85,8 @@ public class PublicTab extends Activity implements OnClickListener{
 		switch (v.getId()){
 		
 		case R.id.sendMessageButton:
+			if(chat.getText().toString().equals(""))
+				break;
 			chatMessage = chat.getText().toString();
 			sendMessageTask = new AsyncTask<Void, Void, Void>(){
 				@Override

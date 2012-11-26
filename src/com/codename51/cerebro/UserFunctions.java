@@ -138,12 +138,13 @@ public class UserFunctions {
 	     *
 	     */
 	    
-	    public JSONObject sendChat(String regId, String message, String sid){
+	    public JSONObject sendChat(String regId, String message, String name, String sid){
 	    	
 	    	List<NameValuePair> params = new ArrayList<NameValuePair>();
 	    	
 	    	params.add(new BasicNameValuePair("regId", regId));
 	    	params.add(new BasicNameValuePair("message", message));
+	    	params.add(new BasicNameValuePair("name", name));
 	    	params.add(new BasicNameValuePair("sid", sid));
 	    	
 	    	JSONObject json = jsonParser.getJSONFromUrl(CHAT_URL, params);		

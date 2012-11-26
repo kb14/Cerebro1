@@ -176,7 +176,7 @@ public class PrivateTab extends Activity
                     UserFunctions uf = new UserFunctions();
                     HashMap<String,String> user = lo.getUserDetails();
                     String serverid = user.get("serverid");
-                    Log.d("SERVERID", serverid);
+                    //Log.d("SERVERID", serverid);
             		JSONObject js = uf.logoutUserFromServer(serverid);
             		try {
 						Log.d("SUCCESS", js.getString("success"));

@@ -3,7 +3,7 @@
     <string name="app_name">Cerebro</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">Cerebro</string>
-	<string name="Welcome_Text">Welcome to Cerebro</string>
+	<string name="Welcome_Text">Welcome to Cerebro!!!</string>
     <string name="new_user">Register New User!</string>
     <string name="existing_user">Login!</string>
     <string name="fill_details">Fill your details</string>

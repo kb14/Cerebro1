@@ -78,6 +78,8 @@ public class PrivateChat extends Activity implements OnClickListener{
 	 public void onClick(View v){
 		 switch (v.getId()){
 		 	case R.id.sendMessageButton:
+		 		if(chat.getText().toString().equals(""))
+		 			break;
 		 		chatMessage = chat.getText().toString();
 		 		sendMessageTask = new AsyncTask<Void, Void, Void>(){
 		 			@Override
@@ -87,7 +89,8 @@ public class PrivateChat extends Activity implements OnClickListener{
 		 				SqliteHandler usr = new SqliteHandler(getApplicationContext());
 		 				HashMap<String,String> user = usr.getUserDetails();
 		 				String sid = user.get("serverid");
-		    			JSONObject json1 = userFunctions.sendChat(regId, chatMessage, sid);
+		 				String nme = user.get("name");
+		    			JSONObject json1 = userFunctions.sendChat(regId, chatMessage, nme, sid);
 		    			try {
 	    					if (json1.getString(KEY_SUCCESS) != null) {
 	    						String res = json1.getString(KEY_SUCCESS);

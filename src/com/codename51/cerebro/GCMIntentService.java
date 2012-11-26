@@ -125,17 +125,21 @@ public class GCMIntentService extends GCMBaseIntentService {
         	MessageHandler2 mh2 = new MessageHandler2(getApplicationContext());
         	mh2.storeMessage(name, message);
         	displayMessage(context, name.toUpperCase()+ ": " +message, "public");
+        	// notifies user
+            generateNotification(context, message, "Public", name);
         }
         else{
+        	String name = intent.getExtras().getString("name");
         	MessageHandler mh = new MessageHandler(getApplicationContext());
         	mh.storeMessage(Integer.parseInt(sid), 1, message);
         	if(Global.currentUser == Integer.parseInt(sid)){
         		displayMessage(context, message, "private");
         
         	}
+        	// notifies user
+            generateNotification(context, message, "Private", name);
         }
-        // notifies user
-        generateNotification(context, message);
+        
     }
  
     /**
@@ -147,7 +151,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         String message = getString(R.string.gcm_deleted, total);
         displayMessage(context, message, "n");
         // notifies user
-        generateNotification(context, message);
+        generateNotification(context, message, "", "");
     }
  
     /**
@@ -172,7 +176,7 @@ public class GCMIntentService extends GCMBaseIntentService {
      * Issues a notification to inform the user that server has sent a message.
      */
     @SuppressWarnings("deprecation")
-	private static void generateNotification(Context context, String message) {
+	private static void generateNotification(Context context, String message, String type, String name) {
         int icon = R.drawable.ic_launcher;
         long when = System.currentTimeMillis();
         NotificationManager notificationManager = (NotificationManager)
@@ -180,9 +184,22 @@ public class GCMIntentService extends GCMBaseIntentService {
         @SuppressWarnings("deprecation")
 		Notification notification = new Notification(icon, message, when);
  
-        String title = context.getString(R.string.app_name);
- 
-        Intent notificationIntent = new Intent(context, Tabbed.class);
+        String title = "";
+        if(type.equals("Private")){
+        	title = name;
+        }
+        else{
+        	title = "Public";
+        }
+        
+        UserFunctions userFunctions = new UserFunctions();
+        Intent notificationIntent;
+        if(userFunctions.isUserLoggedIn(context)){
+        	notificationIntent = new Intent(context, Tabbed.class);
+        }
+        else{
+        	notificationIntent = new Intent(context, MainActivity.class);
+        }
         // set intent so it does not start a new activity
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);

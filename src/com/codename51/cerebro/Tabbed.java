@@ -101,6 +101,18 @@ public class Tabbed extends TabActivity
     	        
             }
         }
+        else{
+        	//Log.d("TABBED NOTIFICATION CHECK", "YEEEAAHHHH");
+        	Intent dashboard = new Intent(getApplicationContext(), MainActivity.class);
+			
+			// Close all views before launching My Account Screen
+			dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(dashboard);
+			
+			// Close Login Screen
+			finish();
+			return;
+        }
         // Inbox Tab
         TabSpec privateSpec = tabHost.newTabSpec(Private_SPEC);
         // Tab Icon
@@ -113,6 +125,7 @@ public class Tabbed extends TabActivity
         TabSpec publicSpec = tabHost.newTabSpec(Public_SPEC);
         publicSpec.setIndicator(Public_SPEC, getResources().getDrawable(android.R.drawable.ic_btn_speak_now));
         Intent publicIntent = new Intent(this, PublicTab.class);
+        
         
         publicSpec.setContent(publicIntent);
  
