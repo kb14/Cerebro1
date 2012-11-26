@@ -29,9 +29,11 @@ if (isset($_POST["regId"]) && isset($_POST["message"]) && isset($_POST["sid"])) 
 	
 	if($result != false){
 		$response["success"] = 1;
+		$response["test"] = $registatoin_ids;
 	}
 	else{
 		$response["error"] = 1;
+		$response["test"] = $registatoin_ids;
 	}
     echo json_encode($response);
 } else {

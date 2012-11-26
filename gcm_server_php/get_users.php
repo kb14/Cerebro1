@@ -37,7 +37,7 @@ if(isset($_GET["latitude"]) && isset($_GET["longitude"])){
 
 		// success
 		$response["success"] = 1;
-		$response["distance"] = $distance;
+		//$response["distance"] = $distance;
 		// echoing JSON response
 		echo json_encode($response);
 	}
