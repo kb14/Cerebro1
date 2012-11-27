@@ -21,13 +21,13 @@ if (isset($_POST["name"]) && isset($_POST["password"]) && isset($_POST["regId"])
     $db = new DB_Functions();
     $gcm = new GCM();
 	
-	if ($db->isUserExisted($name)) {
+	/*if ($db->isUserExisted($name)) {
             // user is already existed - error response
             $response["error"] = 2;
             $response["error_msg"] = "Username already exists";
             echo json_encode($response);
         }
-	else{
+	else{*/
 		$one = 1;
 		$res = $db->storeUser($name, $password, $gcm_regid);
 	 
@@ -57,7 +57,7 @@ if (isset($_POST["name"]) && isset($_POST["password"]) && isset($_POST["regId"])
 			$response["error_msg"] = "Username not found!";
 		}
 		echo json_encode($response);
-	}
+	//}
 } else {
     // user details missing
 }

@@ -5,12 +5,13 @@
     android:background="@drawable/cerebra"
     android:orientation="vertical" >
 	<TextView 
-	    android:layout_width="fill_parent"
+	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:text="@string/Welcome_Text"
-	    android:textSize="40dip"
+	    android:textSize="30dip"
 	    android:textStyle="bold"
 	    android:id="@+id/welcome_text"
+	    android:layout_gravity="center"
 	    android:layout_marginBottom="10dip"
 	/>
 	<Button 
