@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
  
 public final class CommonUtilities {
- 
+    //Only a little change 
     // give your server registration url here
 	//10.0.2.2 -> localhost
     static final String SERVER_URL = "http://192.168.43.35/gcm_server_php/register.php";   
