@@ -1,3 +1,5 @@
+//Has variables used throughout  the app and static strings like urls, ids etc.
+
 package com.codename51.cerebro;
 
 import android.content.Context;

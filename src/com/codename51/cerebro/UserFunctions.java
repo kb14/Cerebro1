@@ -1,3 +1,7 @@
+// Important utility functions class. Contains functions to log in a user into the app and hence notify the server,
+// logout from server, update user location, and all other such network related functions that make a service call
+// to the server. Go through the use cases to gain clarity on how these functions are used
+
 package com.codename51.cerebro;
 
 import java.util.ArrayList;

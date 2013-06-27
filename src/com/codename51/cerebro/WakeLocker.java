@@ -1,3 +1,5 @@
+// Wake Locker class to wake up the phone whenever a new message(notification) arrives.
+
 package com.codename51.cerebro;
 
 import android.content.Context;

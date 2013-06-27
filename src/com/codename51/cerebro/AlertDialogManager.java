@@ -1,3 +1,7 @@
+// Generic Dialog Manager Class . Shows the default Android Dialog when passed in with a title and message
+// See use cases in other files
+
+
 package com.codename51.cerebro;
 
 import android.app.AlertDialog;

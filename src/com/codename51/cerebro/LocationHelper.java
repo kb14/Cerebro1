@@ -1,3 +1,7 @@
+// Location Helper class to pinpoint current location of the user. Uses the best available services
+// GPS or network to find out current location of the user. Go through this class properly, important
+// location fundas here.
+
 package com.codename51.cerebro;
 
 import android.app.Activity;

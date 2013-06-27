@@ -1,3 +1,5 @@
+//Detects network connection. If noe network returns false
+
 package com.codename51.cerebro;
 
 import android.content.Context;
