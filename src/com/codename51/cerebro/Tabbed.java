@@ -1,3 +1,6 @@
+// Tabbed class is the controller to all the three child tabs: private, public and location tabs.
+// This is where we create the three tabs and invoke them. service call made here to check user is logged in or not
+
 package com.codename51.cerebro;
 
 import static com.codename51.cerebro.CommonUtilities.SENDER_ID;

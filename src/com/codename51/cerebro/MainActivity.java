@@ -1,3 +1,6 @@
+// Main activity of the app --  the starting screen, if user already looged in, goes to the tabbed class
+// Other wise shows a view with login / register buttons. Pretty intuitive code
+
 package com.codename51.cerebro;
 
 import android.os.Bundle;
