@@ -1,5 +1,8 @@
 <?php
 
+// For the location tab thingy: gets latitude/longitude of the user named typed on the search field.
+// Only if the searched name is online hence online=1 check
+
 if (isset($_POST["name"])){
 	
 	$name = $_POST["name"];

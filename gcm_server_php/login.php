@@ -1,7 +1,7 @@
 <?php
 /**
  * Logging in user to a system
- * and getting his regid and other details
+ * and getting his regid and other details. First check if user present in db using the getUserByName() function
  */
  
  if (isset($_POST["name"]) && isset($_POST["password"])) {

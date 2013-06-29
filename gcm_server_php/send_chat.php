@@ -1,4 +1,7 @@
 <?php
+//send a private chat to the given gcn registration id :regId. Uses send_notification() function from the gcm 
+// class. Also sends the serverid and name of the person who sent it (Need to discuss on that)
+
  
 // response json
 $json = array();
