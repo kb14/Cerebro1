@@ -1,5 +1,8 @@
 <?php
  
+// The GCM module. send_notification() sends message to the passed in registration ids
+// Single registration id use case: send_chat.php; multiple reg ids use case:send_public_chat.php
+
 class GCM {
  
     //put your code here

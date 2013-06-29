@@ -1,5 +1,7 @@
 <?php
 
+// Log outs a user with serverid from the server by setting online = 0
+
 if (isset($_POST["serverid"])){
 	
 	$serverid = $_POST["serverid"];
