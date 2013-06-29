@@ -1,5 +1,8 @@
 <?php
 
+// Updates gcm registration id of the user with the given serverid. Read about GCM to know more about how it works
+// and what its registration id is etc.
+
 if (isset($_POST["serverid"]) && isset($_POST["regId"])){
 	
 	$serverid = $_POST["serverid"];

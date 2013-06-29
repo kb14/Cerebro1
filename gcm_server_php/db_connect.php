@@ -1,5 +1,7 @@
 <?php
  
+//Generic DB Connect class to be used for database connections whenever required
+
 class DB_Connect {
  
     // constructor

@@ -1,6 +1,7 @@
 <?php
 /**
- * Database config variables
+ * Database config variables: server name, username, database, password etc. Also has the Google
+ * Api key to use GCM Service
  */
 define("DB_HOST", "localhost");
 define("DB_USER", "root");
